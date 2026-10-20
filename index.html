@@ -19,8 +19,8 @@ main{width:100%;max-width:1600px;min-height:0;flex:1;margin:0 auto;padding:8px c
 .intro{text-align:center;flex:0 0 auto;margin:0 auto 6px}.eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:3px}h1{font:400 clamp(20px,2.5vw,30px)/1.1 Georgia,"Times New Roman",serif;margin:0 0 3px}.intro p{font-size:11px;color:var(--muted);margin:0}
 #loading{margin:auto;text-align:center;color:var(--gold);line-height:1.8}.spinner{width:25px;height:25px;border:2px solid #ffffff25;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 10px}@keyframes spin{to{transform:rotate(360deg)}}
 #error{display:none;white-space:pre-wrap;max-width:720px;margin:8px auto;padding:12px;border:1px solid #a95c65;border-radius:10px;background:#52252c55;color:#ffe1e3;font-size:13px;line-height:1.5;overflow:auto}
-#book-wrap{width:100%;flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;touch-action:pan-y;overscroll-behavior:contain}
-#book{margin:auto;transform-origin:center center;will-change:transform}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:#202536;color:var(--gold);font:24px Georgia,serif}
+#book-wrap{width:100%;min-width:0;flex:1 1 auto;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;touch-action:pan-y;overscroll-behavior:contain}
+#book{min-width:0;margin:auto;transform-origin:center center;will-change:transform}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:#202536;color:var(--gold);font:24px Georgia,serif}
 .toolbar{flex:0 0 auto;display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:6px;margin:6px auto 0;width:100%}button{font:inherit;font-size:12px;color:var(--text);background:linear-gradient(#252d40,#1b2130);border:1px solid #ffffff22;border-radius:8px;padding:8px 12px;cursor:pointer;transition:.2s;white-space:nowrap}button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}button:disabled{opacity:.35;cursor:not-allowed}#page-info{min-width:62px;text-align:center;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}#progress{flex:0 0 3px;height:3px;max-width:430px;width:75%;margin:6px auto 0;background:#ffffff1c;border-radius:9px;overflow:hidden}#progress-bar{height:100%;width:0;background:var(--gold);transition:width .2s}.help{display:none}footer{display:none}
 body.fullscreen header,body.fullscreen .intro,body.fullscreen footer{display:none}body.fullscreen main{max-width:none;padding:5px}body.fullscreen #book-wrap{height:auto}
 @media(max-width:600px){
@@ -164,22 +164,26 @@ pdfPage.cleanup();
       pages.push(makeCover(CONFIG.backCover, 'Cover Belakang'));
       totalPages = pages.length;
       bookEl.replaceChildren(...pages);
-// Ukuran halaman disesuaikan dengan ruang yang tersedia.
-      // Di HP, rasio area dibuat tegak agar PageFlip memilih satu halaman.
+// Di HP pakai ukuran FIXED satu halaman dan nonaktifkan autoSize,
+      // supaya elemen buku tidak melebar menjadi dua halaman berdampingan.
       const isPhone = window.matchMedia('(max-width: 600px)').matches;
       const wrapRect = $('book-wrap').getBoundingClientRect();
-      const availableWidth = Math.max(200, Math.floor(wrapRect.width - 8));
-      const phonePageWidth = isPhone ? Math.min(CONFIG.pageWidth, availableWidth) : CONFIG.pageWidth;
+      const availableWidth = Math.max(180, Math.floor(wrapRect.width - 8));
+      const availableHeight = Math.max(260, Math.floor(wrapRect.height - 8));
+      const fitWidthByHeight = Math.floor(availableHeight * CONFIG.pageWidth / CONFIG.pageHeight);
+      const phonePageWidth = isPhone
+        ? Math.min(CONFIG.pageWidth, availableWidth, fitWidthByHeight)
+        : CONFIG.pageWidth;
       const phonePageHeight = Math.round(phonePageWidth * CONFIG.pageHeight / CONFIG.pageWidth);
       pageFlip = new St.PageFlip(bookEl, {
   width: isPhone ? phonePageWidth : CONFIG.pageWidth,
   height: isPhone ? phonePageHeight : CONFIG.pageHeight,
-  size: 'stretch',
-  minWidth: isPhone ? Math.min(180, phonePageWidth) : 220,
+  size: isPhone ? 'fixed' : 'stretch',
+  minWidth: isPhone ? phonePageWidth : 220,
   maxWidth: isPhone ? phonePageWidth : 600,
-  minHeight: isPhone ? Math.min(250, phonePageHeight) : 300,
+  minHeight: isPhone ? phonePageHeight : 300,
   maxHeight: isPhone ? phonePageHeight : 850,
-  autoSize: true,
+  autoSize: !isPhone,
   showCover: true,
   usePortrait: true,
   startPage: 0,
@@ -202,6 +206,13 @@ pdfPage.cleanup();
   }
 }, { capture: true, passive: true });
       pageFlip.on('flip', updateControls);
+      // Setelah DOM PageFlip selesai dibuat, perbarui layout sesuai ukuran layar.
+      if (isPhone) {
+        requestAnimationFrame(() => {
+          pageFlip.update();
+          $('book-wrap').style.minWidth = '0';
+        });
+      }
       $('loading').style.display = 'none'; $('status').textContent = 'Buku siap dibaca'; ready = true;
       ['first','prev','next','last'].forEach(id => $(id).disabled = false);
       updateControls();
