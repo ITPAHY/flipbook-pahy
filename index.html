@@ -10,27 +10,21 @@
 <script src="https://cdn.jsdelivr.net/npm/page-flip@2.0.7/dist/js/page-flip.browser.min.js"></script>
 <style>
 :root{--bg:#111522;--panel:#1d2434;--gold:#d9bd82;--text:#f7f4ed;--muted:#aeb6c7}
-*{box-sizing:border-box}body{margin:0;min-height:100vh;color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 50% 0,#30384c 0,#171c2a 42%,var(--bg) 80%)}
-header{display:flex;align-items:center;justify-content:space-between;gap:14px;padding:18px clamp(16px,4vw,42px);border-bottom:1px solid #ffffff16}.brand{font-weight:800;font-size:13px;letter-spacing:.18em}.brand span{color:var(--gold)}#status{font-size:12px;color:var(--muted);text-align:right}
-main{max-width:1300px;margin:auto;padding:28px 16px 24px}.intro{text-align:center;margin:0 auto 24px}.eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}h1{font:400 clamp(27px,4vw,43px)/1.15 Georgia,"Times New Roman",serif;margin:0 0 8px}.intro p{font-size:13px;color:var(--muted);margin:0}
-#loading{margin:30px auto;text-align:center;color:var(--gold);line-height:1.8}.spinner{width:28px;height:28px;border:2px solid #ffffff25;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
-#error{display:none;white-space:pre-wrap;max-width:720px;margin:20px auto;padding:16px;border:1px solid #a95c65;border-radius:10px;background:#52252c55;color:#ffe1e3;font-size:13px;line-height:1.65}
-#book-wrap {
-  width: 100%;
-  height: min(82vh, 900px);
-  min-height: 320px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  position: relative;
-  touch-action: pan-y;
-  overscroll-behavior: contain;
-}
-  #book{margin:auto;transform-origin:center center;will-change:transform}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:#202536;color:var(--gold);font:24px Georgia,serif}
-.toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:23px auto 10px}button{font:inherit;font-size:12px;color:var(--text);background:linear-gradient(#252d40,#1b2130);border:1px solid #ffffff22;border-radius:8px;padding:10px 13px;cursor:pointer;transition:.2s}button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}button:disabled{opacity:.35;cursor:not-allowed}#page-info{min-width:82px;text-align:center;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}#progress{height:3px;max-width:430px;width:75%;margin:15px auto 0;background:#ffffff1c;border-radius:9px;overflow:hidden}#progress-bar{height:100%;width:0;background:var(--gold);transition:width .2s}.help{text-align:center;color:var(--muted);font-size:11px;line-height:1.7;margin:15px auto 0}footer{text-align:center;color:#778195;font-size:10px;letter-spacing:.13em;padding:22px 12px;border-top:1px solid #ffffff12}
-body.fullscreen header,body.fullscreen .intro,body.fullscreen footer{display:none}body.fullscreen main{max-width:none;padding:8px}body.fullscreen #book-wrap{height:calc(100vh - 115px)}
-@media(max-width:600px){header{padding:14px}.brand{font-size:12px}main{padding:22px 5px}#book-wrap{height: min(70vh, 680px);min-height:270px}.toolbar{gap:6px;margin-top:18px}button{padding:9px 10px;font-size:11px}.help{padding:0 12px}}
+*{box-sizing:border-box}
+html,body{width:100%;height:100%;margin:0;overflow:hidden}
+body{color:var(--text);font-family:Inter,"Segoe UI",Arial,sans-serif;background:radial-gradient(ellipse at 50% 0,#30384c 0,#171c2a 42%,var(--bg) 80%);display:flex;flex-direction:column;min-height:0}
+header{height:44px;flex:0 0 44px;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:0 clamp(12px,3vw,30px);border-bottom:1px solid #ffffff16}.brand{font-weight:800;font-size:12px;letter-spacing:.14em}.brand span{color:var(--gold)}#status{font-size:11px;color:var(--muted);text-align:right}
+main{width:100%;max-width:1300px;flex:1 1 auto;min-height:0;margin:0 auto;padding:8px 12px;display:flex;flex-direction:column;gap:6px;overflow:hidden}
+.intro{text-align:center;flex:0 0 auto;margin:0}.eyebrow{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:2px}h1{font:400 clamp(19px,2.6vh,29px)/1.1 Georgia,"Times New Roman",serif;margin:0 0 2px}.intro p{font-size:11px;color:var(--muted);margin:0}
+#loading{flex:1;margin:auto;text-align:center;color:var(--gold);line-height:1.8;align-content:center}.spinner{width:24px;height:24px;border:2px solid #ffffff25;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 8px}@keyframes spin{to{transform:rotate(360deg)}}
+#error{display:none;white-space:pre-wrap;max-width:720px;margin:auto;padding:12px;border:1px solid #a95c65;border-radius:10px;background:#52252c55;color:#ffe1e3;font-size:12px;line-height:1.5;overflow:auto}
+#book-wrap{width:100%;flex:1 1 0;min-height:0;display:flex;align-items:center;justify-content:center;overflow:hidden;position:relative;touch-action:pan-y;overscroll-behavior:contain}
+#book{margin:auto;transform-origin:center center;will-change:transform;max-width:100%;max-height:100%}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:18px;background:#202536;color:var(--gold);font:clamp(16px,3vw,24px) Georgia,serif}
+.toolbar{flex:0 0 auto;display:flex;flex-wrap:nowrap;align-items:center;justify-content:center;gap:6px;margin:0 auto}button{font:inherit;font-size:11px;white-space:nowrap;color:var(--text);background:linear-gradient(#252d40,#1b2130);border:1px solid #ffffff22;border-radius:7px;padding:7px 10px;cursor:pointer;transition:.2s}button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}button:disabled{opacity:.35;cursor:not-allowed}#page-info{min-width:58px;text-align:center;font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}#progress{height:3px;flex:0 0 3px;max-width:430px;width:65%;margin:0 auto;background:#ffffff1c;border-radius:9px;overflow:hidden}#progress-bar{height:100%;width:0;background:var(--gold);transition:width .2s}.help{display:none}footer{display:none}
+body.fullscreen header,body.fullscreen .intro{display:none}body.fullscreen main{max-width:none;padding:5px}body.fullscreen #book-wrap{min-height:0}
+@media(max-width:600px){header{height:36px;flex-basis:36px;padding:0 10px}.brand{font-size:10px}#status{font-size:10px}main{padding:5px 3px;gap:5px}.eyebrow{font-size:8px}h1{font-size:20px}.intro p{font-size:10px} .toolbar{width:100%;gap:3px}button{padding:7px 6px;font-size:10px;border-radius:6px}#page-info{min-width:45px;font-size:10px}#progress{width:55%}}
+@media(max-width:360px){button{padding:6px 4px;font-size:9px}#page-info{min-width:39px}}
+@media(max-height:520px){header{height:30px;flex-basis:30px}main{padding:3px 8px;gap:3px}.eyebrow,.intro p{display:none}h1{font-size:17px}.toolbar button{padding:5px 7px}.toolbar{gap:4px}}
 </style>
 </head>
 <body>
@@ -169,9 +163,9 @@ pageFlip = new St.PageFlip(bookEl, {
   width: CONFIG.pageWidth,
   height: CONFIG.pageHeight,
   size: 'stretch',
-  minWidth: 220,
+  minWidth: 120,
   maxWidth: 600,
-  minHeight: 300,
+  minHeight: 170,
   maxHeight: 850,
   autoSize: true,
   showCover: true,
@@ -196,6 +190,7 @@ pageFlip = new St.PageFlip(bookEl, {
   }
 }, { capture: true, passive: true });
       pageFlip.on('flip', updateControls);
+      window.addEventListener('resize', () => { if (pageFlip) { pageFlip.update(); } });
       $('loading').style.display = 'none'; $('status').textContent = 'Buku siap dibaca'; ready = true;
       ['first','prev','next','last'].forEach(id => $(id).disabled = false);
       updateControls();
