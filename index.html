@@ -159,14 +159,17 @@ pdfPage.cleanup();
       pages.push(makeCover(CONFIG.backCover, 'Cover Belakang'));
       totalPages = pages.length;
       bookEl.replaceChildren(...pages);
+const isPhone = window.matchMedia('(max-width: 600px)').matches;
+const pageWidth = isPhone ? Math.max(220, Math.min(CONFIG.pageWidth, window.innerWidth - 24)) : CONFIG.pageWidth;
+const pageHeight = Math.round(pageWidth * CONFIG.pageHeight / CONFIG.pageWidth);
 pageFlip = new St.PageFlip(bookEl, {
-  width: CONFIG.pageWidth,
-  height: CONFIG.pageHeight,
+  width: pageWidth,
+  height: pageHeight,
   size: 'stretch',
-  minWidth: 120,
-  maxWidth: 600,
-  minHeight: 170,
-  maxHeight: 850,
+  minWidth: isPhone ? 180 : 300,
+  maxWidth: isPhone ? pageWidth : 600,
+  minHeight: isPhone ? 250 : 420,
+  maxHeight: isPhone ? pageHeight : 850,
   autoSize: true,
   showCover: true,
   usePortrait: true,
