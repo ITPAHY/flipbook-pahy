@@ -15,12 +15,11 @@ header{display:flex;align-items:center;justify-content:space-between;gap:14px;pa
 main{max-width:1300px;margin:auto;padding:28px 16px 24px}.intro{text-align:center;margin:0 auto 24px}.eyebrow{font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}h1{font:400 clamp(27px,4vw,43px)/1.15 Georgia,"Times New Roman",serif;margin:0 0 8px}.intro p{font-size:13px;color:var(--muted);margin:0}
 #loading{margin:30px auto;text-align:center;color:var(--gold);line-height:1.8}.spinner{width:28px;height:28px;border:2px solid #ffffff25;border-top-color:var(--gold);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 12px}@keyframes spin{to{transform:rotate(360deg)}}
 #error{display:none;white-space:pre-wrap;max-width:720px;margin:20px auto;padding:16px;border:1px solid #a95c65;border-radius:10px;background:#52252c55;color:#ffe1e3;font-size:13px;line-height:1.65}
-/* Area buku dibuat responsif terhadap tinggi layar, termasuk layar lama */
+/* Area buku: jangan dipaksa lebih pendek dari kebutuhan flipbook */
 #book-wrap {
   width: 100%;
-  height: clamp(280px, 72vh, 760px);
-  height: clamp(280px, 72dvh, 760px);
-  min-height: 0;
+  height: min(82vh, 900px);
+  min-height: 320px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -28,41 +27,20 @@ main{max-width:1300px;margin:auto;padding:28px 16px 24px}.intro{text-align:cente
   position: relative;
   touch-action: pan-y;
   overscroll-behavior: contain;
-  contain: layout paint;
 }
-  #book{margin:auto;transform-origin:center center;will-change:transform}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:#202536;color:var(--gold);font:24px Georgia,serif}
+#book{margin:auto;transform-origin:center center;will-change:transform}.page{background:#fff;color:#222;overflow:hidden}.page-content{width:100%;height:100%;position:relative;background:#fff;overflow:hidden}.page-content canvas,.page-content img{display:block;width:100%;height:100%;object-fit:contain}.page.cover .page-content{background:#202536}.page.cover img{object-fit:cover}.cover-fallback{height:100%;display:flex;align-items:center;justify-content:center;text-align:center;padding:28px;background:#202536;color:var(--gold);font:24px Georgia,serif}
 .toolbar{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin:23px auto 10px}button{font:inherit;font-size:12px;color:var(--text);background:linear-gradient(#252d40,#1b2130);border:1px solid #ffffff22;border-radius:8px;padding:10px 13px;cursor:pointer;transition:.2s}button:hover:not(:disabled){border-color:var(--gold);color:var(--gold)}button:disabled{opacity:.35;cursor:not-allowed}#page-info{min-width:82px;text-align:center;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}#progress{height:3px;max-width:430px;width:75%;margin:15px auto 0;background:#ffffff1c;border-radius:9px;overflow:hidden}#progress-bar{height:100%;width:0;background:var(--gold);transition:width .2s}.help{text-align:center;color:var(--muted);font-size:11px;line-height:1.7;margin:15px auto 0}footer{text-align:center;color:#778195;font-size:10px;letter-spacing:.13em;padding:22px 12px;border-top:1px solid #ffffff12}
 body.fullscreen header,body.fullscreen .intro,body.fullscreen footer{display:none}
-body.fullscreen main{max-width:none;padding:6px}
-body.fullscreen #book-wrap{height:calc(100vh - 130px);height:calc(100dvh - 130px);max-height:none}
-body.fullscreen .toolbar{margin:8px auto 4px}
-body.fullscreen #progress{margin-top:6px}
-body.fullscreen .help{display:none}
-@media (min-width: 601px) and (max-height: 800px) {
-  main{padding-top:14px;padding-bottom:12px}
-  .intro{margin-bottom:12px}
-  .intro p{margin-top:4px}
-  #book-wrap{height:clamp(260px, 65vh, 560px);height:clamp(260px, 65dvh, 560px)}
-  .toolbar{margin-top:12px}
-  #progress{margin-top:8px}
-  .help{margin-top:8px}
-}
+body.fullscreen main{max-width:none;padding:8px}
+body.fullscreen #book-wrap{height:calc(100vh - 115px)}
 @media(max-width:600px){
-  header{padding:12px 14px}
+  header{padding:14px}
   .brand{font-size:12px}
-  main{padding:14px 5px 18px}
-  .intro{margin-bottom:14px}
-  .eyebrow{margin-bottom:7px}
-  #book-wrap{height:clamp(260px, 62vh, 560px);height:clamp(260px, 62dvh, 560px)}
-  .toolbar{gap:6px;margin-top:12px}
+  main{padding:22px 5px}
+  #book-wrap{height:min(70vh, 680px);min-height:270px}
+  .toolbar{gap:6px;margin-top:18px}
   button{padding:9px 10px;font-size:11px}
-  #page-info{min-width:58px}
-  .help{padding:0 12px;margin-top:10px}
-}
-@media(max-width:380px){
-  .toolbar{gap:4px}
-  button{padding:8px 7px;font-size:10px}
-  #page-info{min-width:48px;font-size:11px}
+  .help{padding:0 12px}
 }
 </style>
 </head>
